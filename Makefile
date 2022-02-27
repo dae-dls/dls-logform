@@ -1,5 +1,5 @@
 PYTHONPATH = .
-PACKAGE_DIR = logging_formatter
+PACKAGE_DIR = dtack_logging_formatter
 
 # ------------------------------------------------------------------
 # Tests.
@@ -25,52 +25,6 @@ pytest:
 	PYTHONPATH=$(PYTHONPATH) pytest
 
 # ------------------------------------------------------------------
-# Update code copies.
-	
-copy-code-testing:
-	cp -f logging_formatter/logging_formatter.py $(repo)/tests/logging_formatter.py
-	cp -f tests/test_logging_formatter.py $(repo)/tests/test_logging_formatter.py
-	@sed -i "s/logging_formatter.logging_formatter/.logging_formatter/g" $(repo)/tests/test_logging_formatter.py
-
-copy-code-library:
-	cp -f logging_formatter/logging_formatter.py $(repo)/$(package)/logging_formatter.py
-	cp -f tests/test_logging_formatter.py $(repo)/tests/test_logging_formatter.py
-	@sed -i "s/logging_formatter.logging_formatter/$(package).logging_formatter/g" $(repo)/tests/test_logging_formatter.py
-	
-copy-code-lib-maxiv-daqcluster-client:
-	@make copy-code-testing repo=../lib-maxiv-daqcluster-client package=daqcluster_client
-	
-copy-code-dev-maxiv-eiger2:
-	@make copy-code-library repo=../dev-maxiv-eiger2 package=dev_maxiv_eiger2
-	
-copy-code:
-	@make copy-code-lib-maxiv-daqcluster-client
-	@make copy-code-dev-maxiv-eiger2
-	
-# ------------------------------------------------------------------
-# Conda.
-
-setup:
-	PYTHON=python3 bash -x -e ./build.sh
-
-CONDA_BUILD_DIRECTORY = /tmp/conda_build/$(PACKAGE_DIR)
-conda-build:
-	conda config --set anaconda_upload no
-	conda build recipe
-
-CONDA_BUILD_DIRECTORY = /tmp/conda_build/$(PACKAGE_DIR)
-conda-build-tmp:
-	rm -rf $(CONDA_BUILD_DIRECTORY)
-	mkdir -p $(CONDA_BUILD_DIRECTORY)
-	conda config --set anaconda_upload no
-	conda build --output-folder $(CONDA_BUILD_DIRECTORY) recipe
-	tree -I "__*" $(CONDA_BUILD_DIRECTORY)
-
-ANACONDA_TOKEN = 60f3ab1170958f40c75d7509
-conda-publish:
-	anaconda upload -t $(ANACONDA_TOKEN) $(CONDA_BUILD_DIRECTORY)/noarch/*.tar.bz2
-
-# ------------------------------------------------------------------
 # Utility.
 
 .PHONY: list
@@ -81,5 +35,21 @@ tree:
 	tree -I "__*" $(PACKAGE_DIR)
 
 show-version:
-	PYTHONPATH=$(PYTHONPATH) python3 logging_formatter/logging_formatter.py --json
-	PYTHONPATH=$(PYTHONPATH) python3 logging_formatter/logging_formatter.py
+	PYTHONPATH=$(PYTHONPATH) python3 -m dtack_logging_formatter.version --json
+	PYTHONPATH=$(PYTHONPATH) python3 -m dtack_logging_formatter.version
+
+# ------------------------------------------------------------------
+# Version bumping.  Configured in setup.cfg. 
+# Thanks: https://pypi.org/project/bump2version/
+bump-patch:
+	bump2version --list patch
+
+bump-minor:
+	bump2version --list minor
+
+bump-major:
+	bump2version --list major
+	
+bump-dryrun:
+	bump2version --dry-run patch
+	

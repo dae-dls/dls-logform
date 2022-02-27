@@ -15,14 +15,14 @@ This is a Python class which derives from logging.Formatter, adding formatting t
 ```python
 import logging
 
-from logging_formatter.logging_formatter import LoggingFormatter
-from logging_formatter.logging_formatter import format_exception_causes
+from dtack_logging_formatter.dtack_logging_formatter import DtackLoggingFormatter
+from dtack_logging_formatter.dtack_logging_formatter import format_exception_causes
 
 # Make handler which writes the logs to console.
 handler = logging.StreamHandler()
 
 # Make the formatter from the MaxIV library.
-maxiv_formatter = LoggingFormatter()
+maxiv_formatter = DtackLoggingFormatter()
 
 # Let handler write custom formatted messages.
 handler.setFormatter(maxiv_formatter)
