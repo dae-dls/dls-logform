@@ -7,7 +7,7 @@ def version():
     Current version.
     DO NOT CHANGE THE NEXT LINE, since bumpversion expects it exactly.
     """
-    CURRENT_VERSION = "3.0.1"
+    CURRENT_VERSION = "3.0.2"
     return CURRENT_VERSION
 
 

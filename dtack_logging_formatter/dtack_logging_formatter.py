@@ -91,7 +91,7 @@ class DtackLoggingFormatter(logging.Formatter):
         zero_delta, last_delta = self.sample_instant(log_record.created)
 
         # Format the message using the args provided on the log call.
-        if len(log_record.args) == 0:
+        if log_record.args is None or len(log_record.args) == 0:
             formatted_message = log_record.msg
         else:
             formatted_message = log_record.msg % log_record.args
