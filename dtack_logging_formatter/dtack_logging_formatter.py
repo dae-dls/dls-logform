@@ -168,10 +168,12 @@ class DtackLoggingFormatter(logging.Formatter):
         """
         if exc_info is None:
             return ""
+        if isinstance(exc_info, bool):
+            return ""
 
         # In the case of "bare", we don't print any stack trace.
         if self.type == "bare":
-            return ""
+            return "--bare--"
 
         # First line shall be indented as well as the rest.
         lines = [""]
