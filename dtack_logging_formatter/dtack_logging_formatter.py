@@ -1,3 +1,4 @@
+import multiprocessing
 import logging
 import os
 import traceback
@@ -129,7 +130,7 @@ class DtackLoggingFormatter(logging.Formatter):
         else:
             formatted_message = "%s %5d %-12s %-12s %8d %8d %-9s %s[%d] %s" % (
                 self.formatTime(log_record),
-                os.getpid(),
+                log_record.process,
                 # Truncate process and thread names if longer than 12.
                 log_record.processName[:12],
                 log_record.threadName[:12],
