@@ -22,7 +22,7 @@ def flatten_exception_message(exception):
         message = str(exception)
 
     return message
-
+  
 
 # ------------------------------------------------------------------------
 def list_exception_causes(exception):
@@ -52,7 +52,7 @@ def format_exception_causes(exception):
 
 
 # --------------------------------------------------------------------
-class DtackLoggingFormatter(logging.Formatter):
+class DlsLoggingFormatter(logging.Formatter):
     """
     Our custom logging formatter.
     """
@@ -235,7 +235,7 @@ class DtackLoggingFormatter(logging.Formatter):
             module2 = self.parse_module_from_filename(frame_summary.filename)
 
             # Skip boring stack entries.
-            if "/dtack_logging_formatter.py" in frame_summary.filename:
+            if "/dls_logging_formatter.py" in frame_summary.filename:
                 continue
             if module2.startswith("logging."):
                 continue

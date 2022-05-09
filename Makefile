@@ -1,5 +1,5 @@
-PYTHONPATH = .
-PACKAGE_DIR = dtack_logging_formatter
+PYTHONPATH = src
+PACKAGE_DIR = dls_logging_formatter
 
 # ------------------------------------------------------------------
 # Tests.
@@ -35,8 +35,8 @@ tree:
 	tree -I "__*" $(PACKAGE_DIR)
 
 show-version:
-	PYTHONPATH=$(PYTHONPATH) python3 -m dtack_logging_formatter.version --json
-	PYTHONPATH=$(PYTHONPATH) python3 -m dtack_logging_formatter.version
+	PYTHONPATH=$(PYTHONPATH) python3 -m dls_logging_formatter.version --json
+	PYTHONPATH=$(PYTHONPATH) python3 -m dls_logging_formatter.version
 
 # ------------------------------------------------------------------
 # Version bumping.  Configured in setup.cfg. 

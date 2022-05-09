@@ -1,14 +1,15 @@
 import argparse
 import json
 
+import dls_logging_formatter
+
 # ----------------------------------------------------------
 def version():
     """
     Current version.
-    DO NOT CHANGE THE NEXT LINE, since bumpversion expects it exactly.
     """
-    CURRENT_VERSION = "3.0.4"
-    return CURRENT_VERSION
+
+    return dls_logging_formatter.__version__
 
 
 # ----------------------------------------------------------
@@ -18,7 +19,7 @@ def meta(given_meta=None):
     Adds version information to given meta, if any.
     """
     s = {}
-    s["dtack_logging_formatter"] = version()
+    s["dls_logging_formatter"] = version()
 
     if given_meta is not None:
         given_meta.update(s)
@@ -32,7 +33,7 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
+    parser.add_argument( 
         "--json",
         action="store_true",
         help="Print version stack in json.",
