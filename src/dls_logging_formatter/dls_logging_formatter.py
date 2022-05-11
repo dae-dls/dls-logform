@@ -59,7 +59,7 @@ class DlsLoggingFormatter(logging.Formatter):
 
     # -----------------------------------------------------------------
     def __init__(
-        self, type="long", log_settings=None, fmt=None, datefmt=None, style="%"
+        self, fmt=None, datefmt=None, style="%", type="long", log_settings=None
     ):
         super().__init__(fmt, datefmt, style)
 
