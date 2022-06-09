@@ -3,9 +3,13 @@ import logging
 import os
 import traceback
 import time
-
+import re
 
 # ------------------------------------------------------------------------
+ansi_colors_regex = re.compile(
+    r"(?:\x1B[@-Z\\-_]|[\x80-\x9A\x9C-\x9F]|(?:\x1B\[|\x9B)[0-?]*[ -/]*[@-~])"
+)
+
 
 def flatten_exception_message(exception):
     """
@@ -13,16 +17,37 @@ def flatten_exception_message(exception):
     """
 
     # Get the informative part of a tango exception.
-    if type(exception).__name__ in ["DevFailed", "ConnectionFailed", "CommunicationFailed"]:
+    if type(exception).__name__ in [
+        "DevFailed",
+        "ConnectionFailed",
+        "CommunicationFailed",
+    ]:
         try:
             message = exception.args[0].desc.rstrip().replace("\n", " ")
         except:
             message = str(exception)
+    elif type(exception).__name__ in ["CellExecutionError"]:
+        cell_line = None
+        # Jupyter ExecutePreprocessor provides its internal traceback as a multi-line string.
+        lines = exception.traceback.split("\n")
+        for line in lines:
+            # Remove colorization that jupyter puts in these messages.
+            line = ansi_colors_regex.sub("", line)
+            # This is the line in the traceback telling which cell had the error?
+            if line.startswith("Input In ["):
+                cell_line = line
+                break
+
+        # Be tolerant of traceback not providing the cell.
+        if cell_line is None:
+            message = "%s %s" % (exception.ename, exception.evalue)
+        else:
+            message = "%s in %s: %s" % (exception.ename, cell_line, exception.evalue)
     else:
         message = str(exception)
 
     return message
-  
+
 
 # ------------------------------------------------------------------------
 def list_exception_causes(exception):
@@ -43,12 +68,12 @@ def list_exception_causes(exception):
 
 
 # ------------------------------------------------------------------------
-def format_exception_causes(exception):
+def format_exception_causes(exception, join_string="... "):
     """
     Make a single string by joining the exception message with the causing exceptions messages.
     """
 
-    return "... ".join(list_exception_causes(exception))
+    return join_string.join(list_exception_causes(exception))
 
 
 # --------------------------------------------------------------------
@@ -87,7 +112,7 @@ class DlsLoggingFormatter(logging.Formatter):
         if log_record.created == self._last_log_record_created:
             return self._last_formatted_message
         self._last_log_record_created = log_record.created
-        
+
         # Compute delta time since last message.
         zero_delta, last_delta = self.sample_instant(log_record.created)
 
@@ -156,9 +181,9 @@ class DlsLoggingFormatter(logging.Formatter):
 
     # -----------------------------------------------------------------
     def formatTime(self, log_record, datefmt=None):
-        return time.strftime("%Y-%m-%d %H:%M:%S.", time.localtime(log_record.created)) + (
-            "%06d" % (int(log_record.msecs * 1000.0))
-        )
+        return time.strftime(
+            "%Y-%m-%d %H:%M:%S.", time.localtime(log_record.created)
+        ) + ("%06d" % (int(log_record.msecs * 1000.0)))
 
     # -----------------------------------------------------------------
     def formatException(self, exc_info):
@@ -174,7 +199,7 @@ class DlsLoggingFormatter(logging.Formatter):
 
         # In the case of "bare", we don't print any stack trace.
         if self.type == "bare":
-            return "--bare--"
+            return ""
 
         # First line shall be indented as well as the rest.
         lines = [""]
@@ -197,9 +222,7 @@ class DlsLoggingFormatter(logging.Formatter):
         message = flatten_exception_message(exception)
 
         lines = []
-        lines.append(
-            "%-9s %s: %s" % ("EXCEPTION", type(exception).__name__, message)
-        )
+        lines.append("%-9s %s: %s" % ("EXCEPTION", type(exception).__name__, message))
 
         # Make the stack from the exception's traceback.
         stack_summary = traceback.extract_tb(exception.__traceback__)
