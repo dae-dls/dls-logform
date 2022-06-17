@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 def main():
     name = "dls-logging-formatter"
-    version = "4.0.3"
+    version = "4.0.5"
     description = "Logging formatter."
     author = "David Erb"
     author_email = "david.erb@diamond.ac.uk"

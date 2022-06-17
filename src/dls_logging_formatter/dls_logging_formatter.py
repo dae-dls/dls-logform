@@ -170,7 +170,7 @@ class DlsLoggingFormatter(logging.Formatter):
         # Bring this back maybe in the future.
         # formatted_message = self.wrap(formatted_message)
 
-        formatted_message = formatted_message + self.formatException(
+        formatted_message = str(formatted_message) + self.formatException(
             log_record.exc_info
         )
 

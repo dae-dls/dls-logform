@@ -27,6 +27,10 @@ pytest:
 # ------------------------------------------------------------------
 # Utility.
 
+sphinx:
+	PYTHONPATH=$(PYTHONPATH) \
+	sphinx-build -EWT --keep-going docs build/html
+
 .PHONY: list
 list:
 	@awk "/^[^\t:]+[:]/" Makefile | grep -v ".PHONY"
