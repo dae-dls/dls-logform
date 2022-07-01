@@ -4,15 +4,15 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import dls_logging_formatter
+import dls_logform
 
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
-project = "dls-logging-formatter"
+project = "dls-logform"
 
 # The full version, including alpha/beta/rc tags.
-release = dls_logging_formatter.__version__
+release = dls_logform.__version__
 
 # The short X.Y version.
 if "+" in release:

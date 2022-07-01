@@ -15,14 +15,14 @@ This is a Python class which derives from logging.Formatter, adding formatting t
 ```python
 import logging
 
-from dls_logging_formatter.dls_logging_formatter import DlsLoggingFormatter
-from dls_logging_formatter.dls_logging_formatter import format_exception_causes
+from dls_logform.dls_logform import DlsLogform
+from dls_logform.dls_logform import format_exception_causes
 
 # Make handler which writes the logs to console.
 handler = logging.StreamHandler()
 
 # Make the formatter from the MaxIV library.
-maxiv_formatter = DlsLoggingFormatter()
+maxiv_formatter = DlsLogform()
 
 # Let handler write custom formatted messages.
 handler.setFormatter(maxiv_formatter)

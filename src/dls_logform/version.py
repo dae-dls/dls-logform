@@ -1,7 +1,7 @@
 import argparse
 import json
 
-import dls_logging_formatter
+import dls_logform
 
 # ----------------------------------------------------------
 def version():
@@ -9,7 +9,7 @@ def version():
     Current version.
     """
 
-    return dls_logging_formatter.__version__
+    return dls_logform.__version__
 
 
 # ----------------------------------------------------------
@@ -19,7 +19,7 @@ def meta(given_meta=None):
     Adds version information to given meta, if any.
     """
     s = {}
-    s["dls_logging_formatter"] = version()
+    s["dls_logform"] = version()
 
     if given_meta is not None:
         given_meta.update(s)
@@ -33,7 +33,7 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument( 
+    parser.add_argument(
         "--json",
         action="store_true",
         help="Print version stack in json.",

@@ -77,7 +77,7 @@ def format_exception_causes(exception, join_string="... "):
 
 
 # --------------------------------------------------------------------
-class DlsLoggingFormatter(logging.Formatter):
+class DlsLogform(logging.Formatter):
     """
     Our custom logging formatter.
     """
@@ -258,7 +258,7 @@ class DlsLoggingFormatter(logging.Formatter):
             module2 = self.parse_module_from_filename(frame_summary.filename)
 
             # Skip boring stack entries.
-            if "/dls_logging_formatter.py" in frame_summary.filename:
+            if "/dls_logform.py" in frame_summary.filename:
                 continue
             if module2.startswith("logging."):
                 continue

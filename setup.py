@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 
 def main():
-    name = "dls-logging-formatter"
-    version = "4.0.5"
+    name = "dls-logform"
+    version = "5.0.0"
     description = "Logging formatter."
     author = "David Erb"
     author_email = "david.erb@diamond.ac.uk"

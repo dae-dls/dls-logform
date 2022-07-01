@@ -1,16 +1,16 @@
 PYTHONPATH = src
-PACKAGE_DIR = dls_logging_formatter
+PACKAGE_DIR = dls_logform
 
 # ------------------------------------------------------------------
 # Tests.
 test-01-simple:
-	PYTHONPATH=$(PYTHONPATH) python3 -m pytest -sv --basetemp=/tmp/$(PACKAGE_DIR) tests/test_logging_formatter.py::Test_01::test_01
+	PYTHONPATH=$(PYTHONPATH) python3 -m pytest -sv --basetemp=/tmp/$(PACKAGE_DIR) tests/test_logform.py::Test_01::test_01
 	
 test-02-exception:
-	PYTHONPATH=$(PYTHONPATH) python3 -m pytest -sv --basetemp=/tmp/$(PACKAGE_DIR) tests/test_logging_formatter.py::Test_02::test_02
+	PYTHONPATH=$(PYTHONPATH) python3 -m pytest -sv --basetemp=/tmp/$(PACKAGE_DIR) tests/test_logform.py::Test_02::test_02
 	
 test-03-stack:  # Run stack test in pytest.
-	PYTHONPATH=$(PYTHONPATH) python3 -m pytest -sv --basetemp=/tmp/$(PACKAGE_DIR) tests/test_logging_formatter.py::Test_03::test_03
+	PYTHONPATH=$(PYTHONPATH) python3 -m pytest -sv --basetemp=/tmp/$(PACKAGE_DIR) tests/test_logform.py::Test_03::test_03
 	
 # ------------------------------------------------------------------
 # GitLab CI.
@@ -39,8 +39,8 @@ tree:
 	tree -I "__*" $(PACKAGE_DIR)
 
 show-version:
-	PYTHONPATH=$(PYTHONPATH) python3 -m dls_logging_formatter.version --json
-	PYTHONPATH=$(PYTHONPATH) python3 -m dls_logging_formatter.version
+	PYTHONPATH=$(PYTHONPATH) python3 -m dls_logform.version --json
+	PYTHONPATH=$(PYTHONPATH) python3 -m dls_logform.version
 
 # ------------------------------------------------------------------
 # Version bumping.  Configured in setup.cfg. 

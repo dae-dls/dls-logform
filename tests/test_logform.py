@@ -2,8 +2,8 @@ import multiprocessing
 import threading
 
 # Our library.
-from dls_logging_formatter.dls_logging_formatter import DlsLoggingFormatter
-from dls_logging_formatter.version import version
+from dls_logform.dls_logform import DlsLogform
+from dls_logform.version import version
 
 import logging
 
@@ -12,7 +12,7 @@ root_logger = logging.getLogger()
 
 class Test_01:
     # -------------------------------------------------------------------------
-    def test_01(self, output_directory):
+    def test(self, output_directory):
         """
         Write single line to file and check that it is correct.
         """
@@ -27,7 +27,7 @@ class Test_01:
             handler = logging.FileHandler(log_filename, "w")
 
             # Make "long" type formatter.
-            formatter = DlsLoggingFormatter()
+            formatter = DlsLogform()
 
             # Let file handler write custom formatted messages.
             handler.setFormatter(formatter)
@@ -68,7 +68,7 @@ class Test_01:
 
 # -----------------------------------------------------------------------------
 class Test_02:
-    def test_02(self, output_directory):
+    def test(self, output_directory):
         """
         Log a debug line followed by log an exception to file, check that file is correct.
         """
@@ -80,7 +80,7 @@ class Test_02:
             console_handler = logging.StreamHandler()
 
             # Make "short" type formatter.
-            short_formatter = DlsLoggingFormatter(type="short")
+            short_formatter = DlsLogform(type="short")
 
             # Let the console write the formatted messages.
             console_handler.setFormatter(short_formatter)
@@ -91,7 +91,7 @@ class Test_02:
             file_handler = logging.FileHandler(log_filename, "w")
 
             # Make "long" type formatter.
-            long_formatter = DlsLoggingFormatter()
+            long_formatter = DlsLogform()
 
             # Let file handler write custom formatted messages.
             file_handler.setFormatter(long_formatter)
@@ -176,7 +176,7 @@ class Test_02:
 
 # -----------------------------------------------------------------------------
 class Test_03:
-    def test_03(self, output_directory):
+    def test(self, output_directory):
         """
         Log an exception from a nested function, write to file, and check tracdbacks are correct.
         """
@@ -188,7 +188,7 @@ class Test_03:
             console_handler = logging.StreamHandler()
 
             # Make "short" type formatter.
-            short_formatter = DlsLoggingFormatter(type="short")
+            short_formatter = DlsLogform(type="short")
 
             # Let the console write the formatted messages.
             console_handler.setFormatter(short_formatter)
@@ -199,7 +199,7 @@ class Test_03:
             file_handler = logging.FileHandler(log_filename, "w")
 
             # Make "long" type formatter.
-            long_formatter = DlsLoggingFormatter()
+            long_formatter = DlsLogform()
 
             # Let file handler write custom formatted messages.
             file_handler.setFormatter(long_formatter)
@@ -279,7 +279,7 @@ class Test_03:
 
 # -----------------------------------------------------------------------------
 class Test_04:
-    def test_04(self, output_directory):
+    def test(self, output_directory):
         """
         Raise an exception from a nested function, write to file, and check tracebacks are correct.
         """
@@ -293,7 +293,7 @@ class Test_04:
             file_handler = logging.FileHandler(log_filename, "w")
 
             # Make "long" type formatter.
-            long_formatter = DlsLoggingFormatter()
+            long_formatter = DlsLogform()
 
             # Let file handler write custom formatted messages.
             file_handler.setFormatter(long_formatter)
@@ -339,7 +339,9 @@ class Test_04:
             assert parts[0] == "EXCEPTION"
 
             message = " ".join(parts[1:])
-            assert message == "RuntimeError: exception while calling nest2", "first exception"
+            assert (
+                message == "RuntimeError: exception while calling nest2"
+            ), "first exception"
 
             # -------------------------------------------------------
             # Parse the first traceback line of the output file.
@@ -359,7 +361,9 @@ class Test_04:
             assert module[0] == "/", "line 4 first character of module is a slash"
 
             message = " ".join(parts[1:])
-            assert message == "raise RuntimeError(\"exception while calling nest2\")", "third message"
+            assert (
+                message == 'raise RuntimeError("exception while calling nest2")'
+            ), "third message"
 
             # -------------------------------------------------------
             # Parse the second exception line of the output file.
@@ -367,7 +371,9 @@ class Test_04:
             assert parts[0] == "EXCEPTION"
 
             message = " ".join(parts[1:])
-            assert message == "RuntimeError: exception while calling nest3", "second exception"
+            assert (
+                message == "RuntimeError: exception while calling nest3"
+            ), "second exception"
 
         finally:
             root_logger.removeHandler(file_handler)
