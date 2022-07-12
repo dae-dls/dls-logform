@@ -98,6 +98,7 @@ class DlsLogform(logging.Formatter):
 
         self.type_info = {
             "bare": {"indent": "\n"},
+            "dls": {"indent": "\n"},
             "short": {"indent": "\n" + " " * 18},
             "long": {"indent": "\n" + " " * 77},
         }
@@ -135,9 +136,31 @@ class DlsLogform(logging.Formatter):
         if hasattr(log_record, "caller_lineno"):
             lineno = log_record.caller_lineno
 
+        formatted_exception = self.formatException(log_record.exc_info)
+
+        formatted_stack = self.formatStack(log_record.stack_info)
+
         # We want short format?
         if self.type == "bare":
             pass
+
+        # We want "format" of separate indices for a database such as graylog.
+        elif self.type == "dls":
+            log_record.dls = True
+            log_record.dls_pathname = pathname
+            log_record.dls_funcname = funcname
+            log_record.dls_lineno = lineno
+            log_record.dls_message = formatted_message
+            log_record.dls_message_plus_exception = (
+                formatted_message + formatted_exception
+            )
+            log_record.dls_process = log_record.process
+            log_record.dls_process_name = log_record.processName
+            log_record.dls_thread_name = log_record.threadName
+            log_record.dls_levelname = log_record.levelname
+            log_record.dls_exception = formatted_exception
+            log_record.dls_stack = formatted_stack
+
         # We want short format?
         elif self.type == "short":
             # Pretty up the filename as a module.
@@ -170,11 +193,9 @@ class DlsLogform(logging.Formatter):
         # Bring this back maybe in the future.
         # formatted_message = self.wrap(formatted_message)
 
-        formatted_message = str(formatted_message) + self.formatException(
-            log_record.exc_info
-        )
+        formatted_message = str(formatted_message) + formatted_exception
 
-        formatted_message = formatted_message + self.formatStack(log_record.stack_info)
+        formatted_message = str(formatted_message) + formatted_stack
 
         self._last_formatted_message = formatted_message
         return formatted_message
