@@ -3,6 +3,8 @@
 __pycache__
 
 .doctrees/
+pages/_sources
+pages/_images
 
 dist/
 
