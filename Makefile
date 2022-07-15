@@ -29,7 +29,7 @@ pytest:
 
 sphinx:
 	PYTHONPATH=$(PYTHONPATH) \
-	sphinx-build -EWT --keep-going docs build/html
+	sphinx-build -EWT --keep-going docs pages
 
 .PHONY: list
 list:
