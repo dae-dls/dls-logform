@@ -12,14 +12,14 @@ import dls_logform
 project = "dls-logform"
 
 # The full version, including alpha/beta/rc tags.
-release = dls_logform.__version__
+# release = dls_logform.__version__
 
 # The short X.Y version.
-if "+" in release:
-    # Not on a tag
-    version = "master"
-else:
-    version = release
+# if "+" in release:
+#     # Not on a tag
+#     version = "master"
+# else:
+#     version = release
 
 extensions = [
     # Use this for generating API docs
@@ -93,6 +93,9 @@ rst_epilog = """
 # Keep the version from appearing in every html page.
 html_title = "dls-logform"
 html_short_title = "dls-logform"
+
+# If true (and html_copy_source is true as well), links to the reST sources will be added to the sidebar. The default is True.
+html_show_sourcelink = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
