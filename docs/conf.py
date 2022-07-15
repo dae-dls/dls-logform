@@ -90,9 +90,13 @@ rst_epilog = """
 
 # -- Options for HTML output -------------------------------------------------
 
+# Keep the version from appearing in every html page.
+html_title = "dls-logform"
+html_short_title = "dls-logform"
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
+# Don't use the sphinx_rtd_theme_github_versions theme.
 html_theme = "sphinx_rtd_theme"
 
 # Options for the sphinx rtd theme, use DLS blue
