@@ -1,42 +1,100 @@
-
 <!DOCTYPE html>
-
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>How to adopt the skeleton in an existing repo &#8212; dls-logform 5.0.17 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to adopt the skeleton in an existing repo &mdash; dls-logform 5.0.19 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/dls-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="How to update to the latest skeleton structure" href="update.html" />
-    <link rel="prev" title="Creating a new repo from the skeleton" href="../tutorials/new.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="prev" title="Creating a new repo from the skeleton" href="../tutorials/new.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="../index.html" class="icon icon-home"> dls-logform
+            <img src="../_static/dls-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                5.0.19
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/new.html">Creating a new repo from the skeleton</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to adopt the skeleton in an existing repo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-merge">Example merge</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">How to update to the latest skeleton structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="excalidraw.html">How to embed Excalidraw diagrams</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/why-use-skeleton.html">Why use a skeleton structure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/why-src.html">Why use a source directory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/why-pre-commit.html">Why use pre-commit</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/dls-python3-skeleton/releases">Releases</a></li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+        </div>
+      </div>
+    </nav>
 
-          <div class="body" role="main">
-            
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dls-logform</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>How to adopt the skeleton in an existing repo</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/how-to/existing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <div class="section" id="how-to-adopt-the-skeleton-in-an-existing-repo">
-<h1>How to adopt the skeleton in an existing repo<a class="headerlink" href="#how-to-adopt-the-skeleton-in-an-existing-repo" title="Permalink to this headline">¶</a></h1>
+<h1>How to adopt the skeleton in an existing repo<a class="headerlink" href="#how-to-adopt-the-skeleton-in-an-existing-repo" title="Permalink to this headline"></a></h1>
 <p>If you have an existing repo and would like to adopt the skeleton structure
 then you can use the commandline tool to merge the skeleton into your repo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span><span class="o">-</span><span class="n">python3</span><span class="o">-</span><span class="n">skeleton</span> <span class="n">existing</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">existing</span><span class="o">/</span><span class="n">repo</span>
@@ -59,7 +117,7 @@ then you can use the commandline tool to merge the skeleton into your repo:</p>
 <span class="pre">install</span></code> will use your virtualenv rather than making its own</p>
 </div>
 <div class="section" id="example-merge">
-<h2>Example merge<a class="headerlink" href="#example-merge" title="Permalink to this headline">¶</a></h2>
+<h2>Example merge<a class="headerlink" href="#example-merge" title="Permalink to this headline"></a></h2>
 <p>As an example, <a class="reference external" href="https://github.com/dls-controls/scanspec/pull/46">scanspec #46</a> shows the what this
 adoption looks like. The commandline tool was run on the existing repo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd /path/to/scanspec
@@ -139,96 +197,31 @@ $ git push github adopt-skeleton
 </div>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorials/new.html" class="btn btn-neutral float-left" title="Creating a new repo from the skeleton" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="update.html" class="btn btn-neutral float-right" title="How to update to the latest skeleton structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../index.html">
-              <img class="logo" src="../_static/dls-logo.svg" alt="Logo"/>
-            </a></p>
-<h1 class="logo"><a href="../index.html">dls-logform</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/new.html">Creating a new repo from the skeleton</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">How to adopt the skeleton in an existing repo</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#example-merge">Example merge</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="update.html">How to update to the latest skeleton structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="excalidraw.html">How to embed Excalidraw diagrams</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/why-use-skeleton.html">Why use a skeleton structure?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/why-src.html">Why use a source directory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../explanations/why-pre-commit.html">Why use pre-commit</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../reference/contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/dls-python3-skeleton/releases">Releases</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../tutorials/new.html" title="previous chapter">Creating a new repo from the skeleton</a></li>
-      <li>Next: <a href="update.html" title="next chapter">How to update to the latest skeleton structure</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      
-      
-      
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/how-to/existing.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

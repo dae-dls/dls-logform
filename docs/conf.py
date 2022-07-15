@@ -93,10 +93,10 @@ rst_epilog = """
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = "sphinx_rtd_theme_github_versions"
+html_theme = "sphinx_rtd_theme"
 
 # Options for the sphinx rtd theme, use DLS blue
-# html_theme_options = dict(style_nav_header_background="rgb(7, 43, 93)")
+html_theme_options = dict(style_nav_header_background="rgb(7, 43, 93)")
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
