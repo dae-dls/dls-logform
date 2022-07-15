@@ -79,7 +79,7 @@ def format_exception_causes(exception, join_string="... "):
 # --------------------------------------------------------------------
 class DlsLogform(logging.Formatter):
     """
-    Our custom logging formatter.
+    This class implements the python logging.Formatter.
     """
 
     # -----------------------------------------------------------------
@@ -98,7 +98,7 @@ class DlsLogform(logging.Formatter):
 
         self.type_info = {
             "bare": {"indent": "\n"},
-            "dls": {"indent": "\n"},
+            "dls": {"indent": "\n" + " " * 77},
             "short": {"indent": "\n" + " " * 18},
             "long": {"indent": "\n" + " " * 77},
         }
@@ -144,23 +144,6 @@ class DlsLogform(logging.Formatter):
         if self.type == "bare":
             pass
 
-        # We want "format" of separate indices for a database such as graylog.
-        elif self.type == "dls":
-            log_record.dls = True
-            log_record.dls_pathname = pathname
-            log_record.dls_funcname = funcname
-            log_record.dls_lineno = lineno
-            log_record.dls_message = formatted_message
-            log_record.dls_message_plus_exception = (
-                formatted_message + formatted_exception
-            )
-            log_record.dls_process = log_record.process
-            log_record.dls_process_name = log_record.processName
-            log_record.dls_thread_name = log_record.threadName
-            log_record.dls_levelname = log_record.levelname
-            log_record.dls_exception = formatted_exception
-            log_record.dls_stack = formatted_stack
-
         # We want short format?
         elif self.type == "short":
             # Pretty up the filename as a module.
@@ -189,6 +172,23 @@ class DlsLogform(logging.Formatter):
                 lineno,
                 formatted_message,
             )
+
+        # We want separate indices for a database such as graylog.
+        if self.type == "dls":
+            log_record.dls = True
+            log_record.dls_pathname = pathname
+            log_record.dls_funcname = funcname
+            log_record.dls_lineno = lineno
+            log_record.dls_message = formatted_message
+            log_record.dls_message_plus_exception = (
+                formatted_message + formatted_exception
+            )
+            log_record.dls_process = log_record.process
+            log_record.dls_process_name = log_record.processName
+            log_record.dls_thread_name = log_record.threadName
+            log_record.dls_levelname = log_record.levelname
+            log_record.dls_exception = formatted_exception
+            log_record.dls_stack = formatted_stack
 
         # Bring this back maybe in the future.
         # formatted_message = self.wrap(formatted_message)
@@ -382,6 +382,7 @@ class DlsLogform(logging.Formatter):
         """
         Give deltas from this record since the past record.
         The value of created is the time when the LogRecord was created (as returned by time.time()).
+        This is only accurate if log records are being produced on the same computer.
         """
 
         if self._time_zero is None:

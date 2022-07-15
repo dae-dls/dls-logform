@@ -1,65 +1,110 @@
-dls-python3-skeleton
+lib-maxiv-logging-formatter
 ===========================
 
-|code_ci| |docs_ci| |coverage| |pypi_version| |license|
+Summary
+-------
 
-This skeleton module (inspired by `jaraco/skeleton
-<https://blog.jaraco.com/skeleton/>`_) is a generic Python project structure
-which provides a means to keep tools and techniques in sync between multiple
-Python projects.
+Styles Python log messages by override of the Python logging.Formatter
+class.
 
-============== ==============================================================
-PyPI           ``pip install dls-python3-skeleton``
-Source code    https://github.com/dls-controls/dls-python3-skeleton
-Documentation  https://dls-controls.github.io/dls-python3-skeleton
-Releases       https://github.com/dls-controls/dls-python3-skeleton/releases
-============== ==============================================================
+The programmer needs to use the standard Python logging to produce info,
+debug and exception message for both users, developers and logstash to
+use. It is not trivial to format messages with the correct information
+which suits all three consumers. This class provides the programmer with
+a no-code solution for consistent log formatting.
 
-It integrates the following tools:
+This is a Python class which derives from logging.Formatter, adding
+formatting to include timestamp, origination, and traceback for both
+human readable and grokable.
 
-- Pipenv for version management
-- Pre-commit with black, flake8, isort and mypy for static analysis
-- Pytest for code and coverage
-- Sphinx for tutorials, how-to guides, explanations and reference documentation
-- GitHub Actions for code and docs CI and deployment to PyPI and GitHub Pages
-- If you use VSCode, it will run black, flake8, isort and mypy on save
+Usage
+-----
 
-The ``skeleton`` branch of this module contains the source code that can be
-merged into new or existing projects, and pulled from to keep them up to date.
-It can also serve as a working example for those who would prefer to
-cherry-pick.
+.. code:: python
 
-The ``master`` branch contains the
-docs and a command line tool to ease the adoption of this skeleton into new::
+   import logging
 
-    dls-python3-skeleton new /path/to/be/created
+   from dls_logform.dls_logform import DlsLogform
+   from dls_logform.dls_logform import format_exception_causes
 
-and existing projects::
+   # Make handler which writes the logs to console.
+   handler = logging.StreamHandler()
 
-    dls-python3-skeleton existing /path/to/existing/repo
+   # Make the formatter from the MaxIV library.
+   maxiv_formatter = DlsLogform()
 
-.. |code_ci| image:: https://github.com/dls-controls/dls-python3-skeleton/workflows/Code%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/dls-python3-skeleton/actions?query=workflow%3A%22Code+CI%22
-    :alt: Code CI
+   # Let handler write custom formatted messages.
+   handler.setFormatter(maxiv_formatter)
 
-.. |docs_ci| image:: https://github.com/dls-controls/dls-python3-skeleton/workflows/Docs%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/dls-python3-skeleton/actions?query=workflow%3A%22Docs+CI%22
-    :alt: Docs CI
+   # Let root logger use the file handler.
+   root_logger = logging.getLogger()
+   root_logger.addHandler(handler)
 
-.. |coverage| image:: https://codecov.io/gh/dls-controls/dls-python3-skeleton/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/dls-controls/dls-python3-skeleton
-    :alt: Test Coverage
+   # Log level for all modules.
+   root_logger.setLevel("DEBUG")
 
-.. |pypi_version| image:: https://img.shields.io/pypi/v/dls-python3-skeleton.svg
-    :target: https://pypi.org/project/dls-python3-skeleton
-    :alt: Latest PyPI version
+   # Log something.
+   root_logger.info("this is something")
 
-.. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
-    :target: https://opensource.org/licenses/Apache-2.0
-    :alt: Apache License
+   # Cause an exception chain to be logged.
+   try:
+       one()
 
-..
-    Anything below this line is used when viewing README.rst and will be replaced
-    when included in index.rst
+   except Exception as exception:
+       logger.exception(
+           "exception in main %s" % (format_exception_causes(exception)),
+           exc_info=exception,
+       )
 
-See https://dls-controls.github.io/dls-python3-skeleton for more detailed documentation.
+
+   def one():
+       try:
+           two()
+       except:
+           raise RuntimeError("badness in one while calling two")
+       
+   def two():
+       raise RuntimeError("badness in two")
+
+description
+-----------
+
+-  a library to enable enhanced log formatting
+-  foundation for even more improvements to log formatting
+
+use cases
+---------
+
+-  developer wishes to see debug output with more useful information
+   than standard logging
+-  many developers working on many programs and device servers want to
+   unify output format
+-  operations person running a pipeline with multiple running processes
+   needs to combine logs using same format
+
+implementation
+--------------
+
+-  use python standard logging
+-  custom formatter overrides logging.Formatter to give time, process,
+   source file and message
+
+example log output
+------------------
+
+::
+
+   2020-02-23 09:09:10.635885 30048 det-viz-00   worker-main      1390      149 INFO     /root/workspace/lib-maxiv-daqcluster/lib_maxiv_daqcluster/worker.py@69 worker process det-viz-00 started
+   2020-02-23 09:09:10.811396 30034 liveprep-00  worker-main      1566      405 DEBUG    /root/workspace/lib-maxiv-valkyrie-python/lib_maxiv_valkyrie/zmq_pubsub/writer.py@48 server to tcp://*:19108 binding
+   2020-02-23 09:09:10.896064 30044 fai1d-viz    MainThread       1651      430 INFO     /root/workspace/lib-maxiv-daqcluster/lib_maxiv_daqcluster/liveview.py@57 liveview process fai1d-viz starting
+   2020-02-23 09:09:10.988101 29972 MainProcess  daq              1743      432 INFO     /root/workspace/lib-maxiv-daqcluster/lib_maxiv_daqcluster/orchestrator.py@58 ScanSettingsKeywords.WORKER_COUNT is 1
+   2020-02-23 09:09:11.039062 30048 det-viz-00   worker-main      1793      403 DEBUG    /root/workspace/lib-maxiv-valkyrie-python/lib_maxiv_valkyrie/zmq_pubsub/reader.py@50 client to tcp://localhost:19108 connecting
+   2020-02-23 09:09:11.056322 30098 worker000    worker-main      1811       68 INFO     /root/workspace/lib-maxiv-daqcluster/lib_maxiv_daqcluster/worker.py@69 worker process worker000 started
+
+change log
+----------
+
+2020-08-18 2.0.1 fixes bug in time format, current format of this
+version is now being used by logstash grok filter for b-v-log-1.
+2020-11-23 2.0.3 fixes README example program 2021-02-08 2.1.0 adds
+format_exception_causes() and list_exception_causes()
