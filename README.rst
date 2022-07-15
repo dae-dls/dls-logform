@@ -1,8 +1,9 @@
-lib-maxiv-logging-formatter
-===========================
+dls-logform
+===========
 
 Summary
 -------
+Version 5.0.27
 
 Styles Python log messages by override of the Python logging.Formatter
 class.
