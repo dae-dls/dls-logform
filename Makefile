@@ -27,9 +27,9 @@ pytest:
 # ------------------------------------------------------------------
 # Utility.
 
-sphinx:
+build_sphinx:
 	PYTHONPATH=$(PYTHONPATH) \
-	sphinx-build -EWT --keep-going docs pages
+	sphinx-build -EWT --keep-going sphinx docs
 
 .PHONY: list
 list:
