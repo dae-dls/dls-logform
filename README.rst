@@ -3,7 +3,7 @@ dls-logform
 
 Summary
 -------
-Version 5.0.35
+Version 5.0.36
 
 Styles Python log messages by override of the Python logging.Formatter
 class.
