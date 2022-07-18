@@ -1,92 +1,46 @@
-import multiprocessing
+from typing import Literal
 import logging
-import os
 import traceback
 import time
-import re
 
-# ------------------------------------------------------------------------
-ansi_colors_regex = re.compile(
-    r"(?:\x1B[@-Z\\-_]|[\x80-\x9A\x9C-\x9F]|(?:\x1B\[|\x9B)[0-?]*[ -/]*[@-~])"
-)
-
-
-def flatten_exception_message(exception):
-    """
-    Remove newlines from exception message.
-    """
-
-    # Get the informative part of a tango exception.
-    if type(exception).__name__ in [
-        "DevFailed",
-        "ConnectionFailed",
-        "CommunicationFailed",
-    ]:
-        try:
-            message = exception.args[0].desc.rstrip().replace("\n", " ")
-        except:
-            message = str(exception)
-    elif type(exception).__name__ in ["CellExecutionError"]:
-        cell_line = None
-        # Jupyter ExecutePreprocessor provides its internal traceback as a multi-line string.
-        lines = exception.traceback.split("\n")
-        for line in lines:
-            # Remove colorization that jupyter puts in these messages.
-            line = ansi_colors_regex.sub("", line)
-            # This is the line in the traceback telling which cell had the error?
-            if line.startswith("Input In ["):
-                cell_line = line
-                break
-
-        # Be tolerant of traceback not providing the cell.
-        if cell_line is None:
-            message = "%s %s" % (exception.ename, exception.evalue)
-        else:
-            message = "%s in %s: %s" % (exception.ename, cell_line, exception.evalue)
-    else:
-        message = str(exception)
-
-    return message
-
-
-# ------------------------------------------------------------------------
-def list_exception_causes(exception):
-    """
-    Make an array by appending the exception message with the causing exceptions messages.
-    """
-
-    # Remove newlines from exception message.
-    message = flatten_exception_message(exception)
-
-    cause_list = ["%s: %s" % (type(exception).__name__, message)]
-    if exception.__cause__ is not None:
-        cause_list.extend(list_exception_causes(exception.__cause__))
-    elif exception.__context__ is not None:
-        cause_list.extend(list_exception_causes(exception.__context__))
-
-    return cause_list
-
-
-# ------------------------------------------------------------------------
-def format_exception_causes(exception, join_string="... "):
-    """
-    Make a single string by joining the exception message with the causing exceptions messages.
-    """
-
-    return join_string.join(list_exception_causes(exception))
-
+from dls_logform.functions import flatten_exception_message
+from dls_logform.functions import list_exception_causes
+from dls_logform.functions import format_exception_causes
 
 # --------------------------------------------------------------------
 class DlsLogform(logging.Formatter):
     """
-    This class implements the python logging.Formatter.
+    This class implements a python logging.Formatter object
     """
 
     # -----------------------------------------------------------------
     def __init__(
-        self, fmt=None, datefmt=None, style="%", type="long", log_settings=None
+        self,
+        type: Literal["bare", "short", "long", "dls"] = "long",
     ):
-        super().__init__(fmt, datefmt, style)
+
+        #
+        """
+        Constructor,
+
+        Args:
+            type (Literal["bare", "dls", "short", "long"], optional): the desired format.
+                Defaults to "long".
+
+                - bare: just the message part, no date/time/process/source.
+                    Typically used for console output to non-technical users.
+
+                - short: message, includes level and source, but not date/time/process.
+                    Typically used during debugging to the console from single-process applications.
+
+                - long: full length formatted message.
+                    Typically used for files written to log.
+
+                - dls: same as "long" but adds some index-ready attributes to the record.
+                    Typically used with a logging server such as Graylog or Logstash.
+
+        """
+        super().__init__(None, None, "%")
 
         self.type = type
 
@@ -94,7 +48,7 @@ class DlsLogform(logging.Formatter):
         self._time_last = None
 
         self._last_log_record_created = None
-        self._last_formatted_message = None
+        self.__last_formatted_message = None
 
         self.type_info = {
             "bare": {"indent": "\n"},
@@ -104,18 +58,20 @@ class DlsLogform(logging.Formatter):
         }
 
     # -----------------------------------------------------------------
-    def format(self, log_record):
+    def format(self, log_record: logging.LogRecord) -> str:
         """
-        Override base format method to provide the custom formatting.
+        Override base method to provide the custom formatting on the given record.
+
+        See https://docs.python.org/3/library/logging.html
         """
 
         # Being asked to format same record again?
         if log_record.created == self._last_log_record_created:
-            return self._last_formatted_message
+            return str(self.__last_formatted_message)
         self._last_log_record_created = log_record.created
 
         # Compute delta time since last message.
-        zero_delta, last_delta = self.sample_instant(log_record.created)
+        zero_delta, last_delta = self.__sample_instant(log_record.created)
 
         # Format the message using the args provided on the log call.
         if log_record.args is None or len(log_record.args) == 0:
@@ -147,7 +103,7 @@ class DlsLogform(logging.Formatter):
         # We want short format?
         elif self.type == "short":
             # Pretty up the filename as a module.
-            module2 = self.parse_module_from_filename(pathname)
+            module2 = self.__parse_module_from_filename(pathname)
             formatted_message = "%8d %8d %-9s %s::%s[%d] %s" % (
                 zero_delta,
                 last_delta,
@@ -190,18 +146,20 @@ class DlsLogform(logging.Formatter):
             log_record.dls_exception = formatted_exception
             log_record.dls_stack = formatted_stack
 
-        # Bring this back maybe in the future.
-        # formatted_message = self.wrap(formatted_message)
-
         formatted_message = str(formatted_message) + formatted_exception
 
         formatted_message = str(formatted_message) + formatted_stack
 
-        self._last_formatted_message = formatted_message
+        self.__last_formatted_message = formatted_message
         return formatted_message
 
     # -----------------------------------------------------------------
     def formatTime(self, log_record, datefmt=None):
+        """
+        Override base method to provide the custom date formatting on the given record.
+
+        Ignores datefmt argument.  Always uses Y-m-d H:M:s.microseconds.
+        """
         return time.strftime(
             "%Y-%m-%d %H:%M:%S.", time.localtime(log_record.created)
         ) + ("%06d" % (int(log_record.msecs * 1000.0)))
@@ -209,9 +167,15 @@ class DlsLogform(logging.Formatter):
     # -----------------------------------------------------------------
     def formatException(self, exc_info):
         """
+        Override base method to provide the custom date formatting on the given record.
+
         The exc_info is standard triple (type, value, traceback).
-        Format the exception type and message, with all tracebacks and chained exceptions.
+
+        Format the exception type and message,
+        with all tracebacks and chained exceptions.
+
         Return as one string with newline characters in it.
+        Put an indent of some spaces on subsequent lines after the first.
         """
         if exc_info is None:
             return ""
@@ -235,7 +199,9 @@ class DlsLogform(logging.Formatter):
     def _format_exception_lines(self, exception):
         """
         Format the exception type and message on one line.
+
         In addition, format the traceback on additional lines.
+
         Recursively format lines from the exception's chained cause or context.
         """
 
@@ -252,9 +218,9 @@ class DlsLogform(logging.Formatter):
         for frame_summary in stack_summary:
 
             # Pretty up the filename as a module.
-            module2 = self.parse_module_from_filename(frame_summary.filename)
+            module2 = self.__parse_module_from_filename(frame_summary.filename)
 
-            lines.append(self.format_frame_summary(module2, frame_summary))
+            lines.append(self.__format_frame_summary(module2, frame_summary))
 
         # Also append any chained exception.
         if exception.__cause__ is not None:
@@ -266,6 +232,12 @@ class DlsLogform(logging.Formatter):
 
     # -----------------------------------------------------------------
     def formatStack(self, stack_info):
+        """
+        Override base method to provide the custom stack formatting on the given record.
+
+        Skips uninteresting stack frames.
+        """
+
         if stack_info is None:
             return ""
 
@@ -276,7 +248,7 @@ class DlsLogform(logging.Formatter):
         for frame_summary in reversed(stack_summary):
 
             # Pretty up the filename as a module.
-            module2 = self.parse_module_from_filename(frame_summary.filename)
+            module2 = self.__parse_module_from_filename(frame_summary.filename)
 
             # Skip boring stack entries.
             if "/dls_logform.py" in frame_summary.filename:
@@ -291,54 +263,34 @@ class DlsLogform(logging.Formatter):
                 break
 
             if not first:
-                output_lines.append(self.format_frame_summary(module2, frame_summary))
+                output_lines.append(self.__format_frame_summary(module2, frame_summary))
 
             first = False
 
         return self.type_info[self.type]["indent"].join(output_lines)
 
     # -----------------------------------------------------------------
-    def wrap(self, line):
-        max = 224
-        level = "..."
+    def __parse_module_from_filename(self, filename: str) -> str:
+        """
+        _summary_
 
-        # Whole line fits?
-        if len(line) < max:
-            return line
+        Args:
+            filename (str): name of the source file.
 
-        cut = line.rfind(" ", 0, max)
-        if cut == -1:
-            cut = max
-
-        output_lines = [line[:cut]]
-        while True:
-            line = line[cut + 1 :]
-
-            if len(line) < max:
-                output_lines.append("%-9s %s" % (level, line))
-                break
-
-            cut = line.rfind(" ", 0, max)
-            if cut == -1:
-                cut = max
-
-            output_lines.append("%-9s %s" % (level, line[:cut]))
-
-        return self.type_info[self.type]["indent"].join(output_lines)
-
-    # -----------------------------------------------------------------
-    def parse_module_from_filename(self, filename):
+        Returns:
+            str: the parsed module name derived from the filename.
+        """
 
         # Remove backslashes put there from a Windows filesystem.
         module2 = filename.replace("\\", "/")
 
         # Keep just last two parts of the path.
-        module2 = module2.split("/")
-        if len(module2) > 1:
-            module2 = module2[-2:]
+        module2_parts = module2.split("/")
+        if len(module2_parts) > 1:
+            module2_parts = module2_parts[-2:]
 
         # Join path parts with a dot.
-        module2 = ".".join(module2)
+        module2 = ".".join(module2_parts)
 
         # Chop off the .py at the end.
         if module2.endswith(".py"):
@@ -347,7 +299,20 @@ class DlsLogform(logging.Formatter):
         return module2
 
     # -----------------------------------------------------------------
-    def format_frame_summary(self, module2, frame_summary):
+    def __format_frame_summary(
+        self, module2: str, frame_summary: traceback.FrameSummary
+    ) -> str:
+        """
+        Format a single StackSummary to look nice as a single line in the output.
+
+        Args:
+            module2 (str): parsed name of the module
+            frame_summary (traceback.FrameSummary):
+                the FrameSummary from traceback.extract_tb to be formatted
+
+        Returns:
+            str: line of output according to the formatting type we are doing.
+        """
 
         if self.type == "short":
             return "%-9s %s::%s[%d] %s" % (
@@ -378,10 +343,11 @@ class DlsLogform(logging.Formatter):
         self._time_last = now
 
     # -----------------------------------------------------------------
-    def sample_instant(self, created):
+    def __sample_instant(self, created):
         """
         Give deltas from this record since the past record.
-        The value of created is the time when the LogRecord was created (as returned by time.time()).
+        The value of created is the time when the LogRecord was created
+        (as returned by time.time()).
         This is only accurate if log records are being produced on the same computer.
         """
 

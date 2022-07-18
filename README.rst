@@ -3,7 +3,7 @@ dls-logform
 
 Summary
 -------
-Version 5.0.39
+Version 5.0.40
 
 Styles Python log messages by override of the Python logging.Formatter
 class.
@@ -26,7 +26,7 @@ Usage
    import logging
 
    from dls_logform.dls_logform import DlsLogform
-   from dls_logform.dls_logform import format_exception_causes
+   from dls_logform.functions import format_exception_causes
 
    # Make handler which writes the logs to console.
    handler = logging.StreamHandler()
