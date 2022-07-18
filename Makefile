@@ -27,7 +27,7 @@ pytest:
 # ------------------------------------------------------------------
 # Utility.
 
-build_docks:
+build_docs:
 	PYTHONPATH=$(PYTHONPATH) \
 	sphinx-build -EWT --keep-going docs build/html
 
