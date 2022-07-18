@@ -30,6 +30,7 @@ pytest:
 build_docs:
 	PYTHONPATH=$(PYTHONPATH) \
 	sphinx-build -EWT --keep-going docs build/html
+	touch build/html/.nojekyll
 
 #  331  wget https://github.com/GitCredentialManager/git-credential-manager/releases/download/v2.0.785/gcm-linux_amd64.2.0.785.tar.gz
 #  334  tar -xvf gcm-linux_amd64.2.0.785.tar.gz -C /usr/local/bin
