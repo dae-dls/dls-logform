@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dls-logform &mdash; dls-logform</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/dls-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="tutorials/installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="#" class="icon icon-home"> dls-logform
+            <img src="_static/dls-logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/new.html">Creating a new repo from the skeleton</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how-to/existing.html">How to adopt the skeleton in an existing repo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/update.html">How to update to the latest skeleton structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/excalidraw.html">How to embed Excalidraw diagrams</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="explanations/why-use-skeleton.html">Why use a skeleton structure?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/why-src.html">Why use a source directory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/why-pre-commit.html">Why use pre-commit</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/dls-python3-skeleton/releases">Releases</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">dls-logform</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>dls-logform</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="dls-logform">
+<h1>dls-logform<a class="headerlink" href="#dls-logform" title="Permalink to this headline"></a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline"></a></h2>
+<p>Version 5.0.36</p>
+<p>Styles Python log messages by override of the Python logging.Formatter
+class.</p>
+<p>The programmer needs to use the standard Python logging to produce info,
+debug and exception message for both users, developers and logstash to
+use. It is not trivial to format messages with the correct information
+which suits all three consumers. This class provides the programmer with
+a no-code solution for consistent log formatting.</p>
+<p>This is a Python class which derives from logging.Formatter, adding
+formatting to include timestamp, origination, and traceback for both
+human readable and grokable.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">dls_logform.dls_logform</span> <span class="kn">import</span> <span class="n">DlsLogform</span>
+<span class="kn">from</span> <span class="nn">dls_logform.dls_logform</span> <span class="kn">import</span> <span class="n">format_exception_causes</span>
+
+<span class="c1"># Make handler which writes the logs to console.</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+
+<span class="c1"># Make the formatter from the MaxIV library.</span>
+<span class="n">maxiv_formatter</span> <span class="o">=</span> <span class="n">DlsLogform</span><span class="p">()</span>
+
+<span class="c1"># Let handler write custom formatted messages.</span>
+<span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">maxiv_formatter</span><span class="p">)</span>
+
+<span class="c1"># Let root logger use the file handler.</span>
+<span class="n">root_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">root_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+<span class="c1"># Log level for all modules.</span>
+<span class="n">root_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">)</span>
+
+<span class="c1"># Log something.</span>
+<span class="n">root_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;this is something&quot;</span><span class="p">)</span>
+
+<span class="c1"># Cause an exception chain to be logged.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">one</span><span class="p">()</span>
+
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
+        <span class="s2">&quot;exception in main </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">format_exception_causes</span><span class="p">(</span><span class="n">exception</span><span class="p">)),</span>
+        <span class="n">exc_info</span><span class="o">=</span><span class="n">exception</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">one</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">two</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;badness in one while calling two&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">two</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;badness in two&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h2>description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>a library to enable enhanced log formatting</p></li>
+<li><p>foundation for even more improvements to log formatting</p></li>
+</ul>
+</div>
+<div class="section" id="use-cases">
+<h2>use cases<a class="headerlink" href="#use-cases" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>developer wishes to see debug output with more useful information
+than standard logging</p></li>
+<li><p>many developers working on many programs and device servers want to
+unify output format</p></li>
+<li><p>operations person running a pipeline with multiple running processes
+needs to combine logs using same format</p></li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>implementation<a class="headerlink" href="#implementation" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>use python standard logging</p></li>
+<li><p>custom formatter overrides logging.Formatter to give time, process,
+source file and message</p></li>
+</ul>
+</div>
+<div class="section" id="example-log-output">
+<h2>example log output<a class="headerlink" href="#example-log-output" title="Permalink to this headline"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.635885</span> <span class="mi">30048</span> <span class="n">det</span><span class="o">-</span><span class="n">viz</span><span class="o">-</span><span class="mi">00</span>   <span class="n">worker</span><span class="o">-</span><span class="n">main</span>      <span class="mi">1390</span>      <span class="mi">149</span> <span class="n">INFO</span>     <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">maxiv</span><span class="o">-</span><span class="n">daqcluster</span><span class="o">/</span><span class="n">lib_maxiv_daqcluster</span><span class="o">/</span><span class="n">worker</span><span class="o">.</span><span class="n">py</span><span class="o">@</span><span class="mi">69</span> <span class="n">worker</span> <span class="n">process</span> <span class="n">det</span><span class="o">-</span><span class="n">viz</span><span class="o">-</span><span class="mi">00</span> <span class="n">started</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.811396</span> <span class="mi">30034</span> <span class="n">liveprep</span><span class="o">-</span><span class="mi">00</span>  <span class="n">worker</span><span class="o">-</span><span class="n">main</span>      <span class="mi">1566</span>      <span class="mi">405</span> <span class="n">DEBUG</span>    <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">maxiv</span><span class="o">-</span><span class="n">valkyrie</span><span class="o">-</span><span class="n">python</span><span class="o">/</span><span class="n">lib_maxiv_valkyrie</span><span class="o">/</span><span class="n">zmq_pubsub</span><span class="o">/</span><span class="n">writer</span><span class="o">.</span><span class="n">py</span><span class="o">@</span><span class="mi">48</span> <span class="n">server</span> <span class="n">to</span> <span class="n">tcp</span><span class="p">:</span><span class="o">//*</span><span class="p">:</span><span class="mi">19108</span> <span class="n">binding</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.896064</span> <span class="mi">30044</span> <span class="n">fai1d</span><span class="o">-</span><span class="n">viz</span>    <span class="n">MainThread</span>       <span class="mi">1651</span>      <span class="mi">430</span> <span class="n">INFO</span>     <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">maxiv</span><span class="o">-</span><span class="n">daqcluster</span><span class="o">/</span><span class="n">lib_maxiv_daqcluster</span><span class="o">/</span><span class="n">liveview</span><span class="o">.</span><span class="n">py</span><span class="o">@</span><span class="mi">57</span> <span class="n">liveview</span> <span class="n">process</span> <span class="n">fai1d</span><span class="o">-</span><span class="n">viz</span> <span class="n">starting</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.988101</span> <span class="mi">29972</span> <span class="n">MainProcess</span>  <span class="n">daq</span>              <span class="mi">1743</span>      <span class="mi">432</span> <span class="n">INFO</span>     <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">maxiv</span><span class="o">-</span><span class="n">daqcluster</span><span class="o">/</span><span class="n">lib_maxiv_daqcluster</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">.</span><span class="n">py</span><span class="o">@</span><span class="mi">58</span> <span class="n">ScanSettingsKeywords</span><span class="o">.</span><span class="n">WORKER_COUNT</span> <span class="ow">is</span> <span class="mi">1</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">11.039062</span> <span class="mi">30048</span> <span class="n">det</span><span class="o">-</span><span class="n">viz</span><span class="o">-</span><span class="mi">00</span>   <span class="n">worker</span><span class="o">-</span><span class="n">main</span>      <span class="mi">1793</span>      <span class="mi">403</span> <span class="n">DEBUG</span>    <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">maxiv</span><span class="o">-</span><span class="n">valkyrie</span><span class="o">-</span><span class="n">python</span><span class="o">/</span><span class="n">lib_maxiv_valkyrie</span><span class="o">/</span><span class="n">zmq_pubsub</span><span class="o">/</span><span class="n">reader</span><span class="o">.</span><span class="n">py</span><span class="o">@</span><span class="mi">50</span> <span class="n">client</span> <span class="n">to</span> <span class="n">tcp</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">19108</span> <span class="n">connecting</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">11.056322</span> <span class="mi">30098</span> <span class="n">worker000</span>    <span class="n">worker</span><span class="o">-</span><span class="n">main</span>      <span class="mi">1811</span>       <span class="mi">68</span> <span class="n">INFO</span>     <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">workspace</span><span class="o">/</span><span class="n">lib</span><span class="o">-</span><span class="n">maxiv</span><span class="o">-</span><span class="n">daqcluster</span><span class="o">/</span><span class="n">lib_maxiv_daqcluster</span><span class="o">/</span><span class="n">worker</span><span class="o">.</span><span class="n">py</span><span class="o">@</span><span class="mi">69</span> <span class="n">worker</span> <span class="n">process</span> <span class="n">worker000</span> <span class="n">started</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="change-log">
+<h2>change log<a class="headerlink" href="#change-log" title="Permalink to this headline"></a></h2>
+<p>2020-08-18 2.0.1 fixes bug in time format, current format of this
+version is now being used by logstash grok filter for b-v-log-1.
+2020-11-23 2.0.3 fixes README example program 2021-02-08 2.1.0 adds
+format_exception_causes() and list_exception_causes()</p>
+</div>
+<div class="section" id="how-the-documentation-is-structured">
+<h2>How the documentation is structured<a class="headerlink" href="#how-the-documentation-is-structured" title="Permalink to this headline"></a></h2>
+<p>Documentation is split into four categories, also accessible from links in the
+side-bar.</p>
+<div class="columns section" id="tutorials">
+<h3><a class="reference internal" href="tutorials.html"><span class="doc">Tutorials</span></a><a class="headerlink" href="#tutorials" title="Permalink to this headline"></a></h3>
+<p>Tutorials for installation, library and commandline usage. New users start here.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/installation.html#check-your-version-of-python">Check your version of python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/installation.html#create-a-virtual-environment">Create a virtual environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/installation.html#installing-the-library">Installing the library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/new.html">Creating a new repo from the skeleton</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/new.html#getting-started-with-your-new-repo">Getting started with your new repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/new.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/new.html#building-the-docs">Building the docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/new.html#pushing-to-github">Pushing to GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/new.html#what-next">What next?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="columns section" id="how-to">
+<h3><a class="reference internal" href="how-to.html"><span class="doc">How-to Guides</span></a><a class="headerlink" href="#how-to" title="Permalink to this headline"></a></h3>
+<p>Practical step-by-step guides for the more experienced user.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">How-to Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how-to/existing.html">How to adopt the skeleton in an existing repo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="how-to/existing.html#example-merge">Example merge</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/update.html">How to update to the latest skeleton structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to/excalidraw.html">How to embed Excalidraw diagrams</a></li>
+</ul>
+</div>
+</div>
+<div class="columns section" id="explanations">
+<h3><a class="reference internal" href="explanations.html"><span class="doc">Explanations</span></a><a class="headerlink" href="#explanations" title="Permalink to this headline"></a></h3>
+<p>Explanation of how the library works and why it works that way.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Explanations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="explanations/why-use-skeleton.html">Why use a skeleton structure?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="explanations/why-use-skeleton.html#why-do-you-need-the-commandline-tool">Why do you need the commandline tool?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explanations/why-use-skeleton.html#what-happens-if-the-merges-become-too-difficult">What happens if the merges become too difficult?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/why-src.html">Why use a source directory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/why-pre-commit.html">Why use pre-commit</a></li>
+</ul>
+</div>
+</div>
+<div class="columns section" id="reference">
+<h3><a class="reference internal" href="reference.html"><span class="doc">Reference</span></a><a class="headerlink" href="#reference" title="Permalink to this headline"></a></h3>
+<p>Practical step-by-step guides for the more experienced user.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/contributing.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/contributing.html#code-styling">Code Styling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/contributing.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/contributing.html#release-process">Release Process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dls-controls/dls-python3-skeleton/releases">Releases</a></li>
+</ul>
+</div>
+</div>
+<div class="endcolumns section" id="about-the-documentation">
+<h3>About the documentation<a class="headerlink" href="#about-the-documentation" title="Permalink to this headline"></a></h3>
+<p><a class="reference external" href="https://documentation.divio.com">Why is the documentation structured this way?</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorials/installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
