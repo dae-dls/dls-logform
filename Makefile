@@ -27,9 +27,22 @@ pytest:
 # ------------------------------------------------------------------
 # Utility.
 
-build_sphinx:
+build_docks:
 	PYTHONPATH=$(PYTHONPATH) \
-	sphinx-build -EWT --keep-going sphinx docs
+	sphinx-build -EWT --keep-going docs build/html
+
+#  331  wget https://github.com/GitCredentialManager/git-credential-manager/releases/download/v2.0.785/gcm-linux_amd64.2.0.785.tar.gz
+#  334  tar -xvf gcm-linux_amd64.2.0.785.tar.gz -C /usr/local/bin
+#  335  git-credential-manager-core configure
+#  338  yum install -y libicu libsecret
+#  339  git-credential-manager-core configure
+#  341  export GCM_CREDENTIAL_STORE=secretservice
+#  342  git subtree push --prefix build/html origin gh-pages
+#  345  export GCM_CREDENTIAL_STORE=gpg
+#  346  git subtree push --prefix build/html origin gh-pages
+ 
+publish_docs:
+	
 
 .PHONY: list
 list:
