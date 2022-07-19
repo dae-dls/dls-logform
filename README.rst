@@ -1,9 +1,9 @@
-dls-logform
-===========
+dls-logform - Pyton library for log formatting
+==============================================
 
-Summary
+summary
 -------
-Version 5.0.40
+Version 5.0.41
 
 Styles Python log messages by override of the Python logging.Formatter
 class.
@@ -18,8 +18,8 @@ This is a Python class which derives from logging.Formatter, adding
 formatting to include timestamp, origination, and traceback for both
 human readable and grokable.
 
-Usage
------
+example
+-------
 
 .. code:: python
 
@@ -67,11 +67,6 @@ Usage
    def two():
        raise RuntimeError("badness in two")
 
-description
------------
-
--  a library to enable enhanced log formatting
--  foundation for even more improvements to log formatting
 
 use cases
 ---------
@@ -102,10 +97,13 @@ example log output
    2020-02-23 09:09:11.039062 30048 det-viz-00   worker-main      1793      403 DEBUG    /root/workspace/lib-maxiv-valkyrie-python/lib_maxiv_valkyrie/zmq_pubsub/reader.py@50 client to tcp://localhost:19108 connecting
    2020-02-23 09:09:11.056322 30098 worker000    worker-main      1811       68 INFO     /root/workspace/lib-maxiv-daqcluster/lib_maxiv_daqcluster/worker.py@69 worker process worker000 started
 
-change log
-----------
+installation
+------------
+Install from github::
 
-2020-08-18 2.0.1 fixes bug in time format, current format of this
-version is now being used by logstash grok filter for b-v-log-1.
-2020-11-23 2.0.3 fixes README example program 2021-02-08 2.1.0 adds
-format_exception_causes() and list_exception_causes()
+    python3 -m pip install git+https://github.com/dae-dls/dls-logform.git
+
+The library should now be installed.
+You can check the version that has been installed by typing::
+
+    python3 -m dls_logform.version --json

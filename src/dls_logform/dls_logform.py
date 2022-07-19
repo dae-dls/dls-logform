@@ -1,4 +1,5 @@
-from typing import Literal
+import types
+from typing import Literal, Tuple, Union, Optional, Type
 import logging
 import traceback
 import time
@@ -154,18 +155,24 @@ class DlsLogform(logging.Formatter):
         return formatted_message
 
     # -----------------------------------------------------------------
-    def formatTime(self, log_record, datefmt=None):
+    def formatTime(self, log_record: logging.LogRecord, datefmt=None) -> str:
         """
-        Override base method to provide the custom date formatting on the given record.
+        Override base method to provide the custom date formatting on the given record's created date.
 
-        Ignores datefmt argument.  Always uses Y-m-d H:M:s.microseconds.
+        Ignores the datefmt argument.  Always uses Y-m-d H:M:s.microseconds.
         """
         return time.strftime(
             "%Y-%m-%d %H:%M:%S.", time.localtime(log_record.created)
         ) + ("%06d" % (int(log_record.msecs * 1000.0)))
 
     # -----------------------------------------------------------------
-    def formatException(self, exc_info):
+    def formatException(
+        self,
+        exc_info: Union[
+            Tuple[Type[BaseException], BaseException, Optional[types.TracebackType]],
+            Tuple[None, None, None],
+        ],
+    ):
         """
         Override base method to provide the custom date formatting on the given record.
 
@@ -231,11 +238,15 @@ class DlsLogform(logging.Formatter):
         return lines
 
     # -----------------------------------------------------------------
-    def formatStack(self, stack_info):
+    def formatStack(self, stack_info: str) -> str:
         """
         Override base method to provide the custom stack formatting on the given record.
 
+        This implementation does not use the stack_info argument to compolse the output, instead using traceback.
+
         Skips uninteresting stack frames.
+
+        Returns a single string with newlines in it, all lines preceded by some spaces of indent.
         """
 
         if stack_info is None:
