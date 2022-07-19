@@ -1,9 +1,12 @@
 dls-logform - Pyton library for log formatting
 ==============================================
 
+full documentation found at: https://dae-dls.github.io/dls-logform/
+
+
 summary
 -------
-Version 5.0.41
+Version 5.0.42
 
 Styles Python log messages by override of the Python logging.Formatter
 class.
